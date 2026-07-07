@@ -458,3 +458,170 @@ body {
   font-size: 0.7rem;
   color: var(--text-muted);
 }
+
+/* 3. Main Portal Application Grid */
+.portal-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.portal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.portal-content {
+  margin-bottom: 3rem;
+}
+
+.portal-intro {
+  margin-bottom: 2rem;
+}
+
+.portal-intro h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.35rem;
+}
+
+.portal-intro p {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.app-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.app-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.app-card.active {
+  cursor: pointer;
+}
+
+.app-card.active:hover {
+  transform: translateY(-4px);
+  border-color: var(--accent);
+  box-shadow: 0 4px 20px rgba(59, 130, 246, 0.15);
+}
+
+a.app-card {
+  text-decoration: none;
+  color: inherit;
+}
+
+.app-card.disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.app-icon-wrapper {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--border-radius);
+  background-color: var(--bg-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+  transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+.app-card.active:hover .app-icon-wrapper {
+  color: white;
+  background-color: var(--accent);
+  border-color: var(--accent);
+}
+
+.app-card svg {
+  width: 24px;
+  height: 24px;
+}
+
+.app-meta h4 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.35rem;
+}
+
+.app-meta p {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin-bottom: 1rem;
+}
+
+.badge {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+
+.badge-active {
+  background-color: rgba(16, 185, 129, 0.15);
+  color: var(--status-online);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.badge-restricted {
+  background-color: rgba(148, 163, 184, 0.15);
+  color: var(--text-secondary);
+  border: 1px solid rgba(148, 163, 184, 0.3);
+}
+
+.portal-footer {
+  text-align: center;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  border-top: 1px solid var(--border-color);
+  padding-top: 1.5rem;
+}
+
+/* Back button in dashboard header */
+.btn-back {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.25rem;
+  transition: color 0.2s ease;
+  padding: 0;
+}
+
+.btn-back:hover {
+  color: var(--accent);
+}
+
+.dashboard-header .header-branding {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+

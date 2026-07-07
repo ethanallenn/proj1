@@ -35,14 +35,74 @@
     </div>
   </div>
 
-  <!-- 2. Main Dashboard Interface -->
+  <!-- 2. Main Portal Application Grid -->
+  <div id="appGridWrapper" class="portal-container" style="display: none;">
+    <!-- Top Header bar -->
+    <header class="portal-header">
+      <div class="header-branding">
+        <h2>Visuae Workspace</h2>
+        <p>Enterprise Infrastructure Portal</p>
+      </div>
+      <div class="header-controls">
+        <button id="portalThemeToggle" class="btn-theme-toggle" aria-label="Toggle Theme" title="Toggle Theme"></button>
+        <button id="portalLogoutBtn" class="btn-logout" title="Lock Console">Logout</button>
+      </div>
+    </header>
+
+    <!-- App Grid Content -->
+    <main class="portal-content">
+      <div class="portal-intro">
+        <h3>Welcome, Administrator</h3>
+        <p>Select an application to manage and monitor Visuae systems.</p>
+      </div>
+      
+      <div class="app-grid">
+        <!-- App 1: Phoneline Status (Active) -->
+        <div class="app-card active" id="appPhonelineStatus">
+          <div class="app-icon-wrapper">
+            <svg fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
+            </svg>
+          </div>
+          <div class="app-meta">
+            <h4>Phoneline Status</h4>
+            <p>Monitor and test active SIP trunks, AWS Connect gateways, and IVRs.</p>
+            <span class="badge badge-active">Active</span>
+          </div>
+        </div>
+
+        <!-- App 2: Intranet (Active Link) -->
+        <a href="https://visuaestudios.sharepoint.com" target="_blank" rel="noopener noreferrer" class="app-card active" id="appIntranet">
+          <div class="app-icon-wrapper">
+            <svg fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM19 18H6c-2.21 0-4-1.79-4-4 0-2.05 1.53-3.76 3.56-3.97l1.07-.11.5-.95C8.08 7.14 9.94 6 12 6c2.62 0 4.88 1.86 5.39 4.43l.3 1.5 1.53.11c1.56.1 2.78 1.41 2.78 2.96 0 1.65-1.35 3-3 3z"/>
+            </svg>
+          </div>
+          <div class="app-meta">
+            <h4>Visuae Intranet</h4>
+            <p>Access the corporate SharePoint portal, internal resources, and documents.</p>
+            <span class="badge badge-active">Launch</span>
+          </div>
+        </a>
+      </div>
+    </main>
+    
+    <footer class="portal-footer">
+      <p>&copy; 2026 Visuae Phone Network Administration Panel.</p>
+    </footer>
+  </div>
+
+  <!-- 3. Main Dashboard Interface -->
   <div id="dashboardWrapper" class="dashboard-container" style="display: none;">
     
     <!-- Top Header bar -->
     <header class="dashboard-header">
       <div class="header-branding">
-        <h2>Visuae Phone Status Gateway</h2>
-        <p>Infrastructure Monitor</p>
+        <button id="backToGridBtn" class="btn-back" title="Back to Portal Dashboard">← Back to Portal</button>
+        <div>
+          <h2>Visuae Phone Status Gateway</h2>
+          <p>Infrastructure Monitor</p>
+        </div>
       </div>
       <div class="header-controls">
         <button id="themeToggle" class="btn-theme-toggle" aria-label="Toggle Theme" title="Toggle Theme"></button>
