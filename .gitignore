@@ -1,0 +1,12 @@
+# Local environment secrets (DO NOT COMMIT)
+.env
+
+# Dependencies
+node_modules/
+
+# Production build artifacts
+dist/
+
+# Logs and system files
+*.log
+.DS_Store

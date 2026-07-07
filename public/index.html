@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Visuae Infrastructure Dashboard</title>
+  <meta name="description" content="Secure administrative status monitor and integration test gateway for the Visuae Phone Network.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- 1. Password Wall / Login Screen -->
+  <div id="loginOverlay" class="login-wrapper">
+    <div class="login-card">
+      <div class="login-logo">
+        <svg fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/>
+        </svg>
+      </div>
+      <h2>System Login</h2>
+      <p>Please enter administrative credentials</p>
+      
+      <form id="loginForm">
+        <div class="input-group">
+          <label for="usernameInput">Username</label>
+          <input type="text" id="usernameInput" required placeholder="admin" autocomplete="username">
+        </div>
+        <div class="input-group">
+          <label for="passwordInput">Password</label>
+          <input type="password" id="passwordInput" required placeholder="••••••••" autocomplete="current-password">
+        </div>
+        <div id="loginError" class="login-error-msg"></div>
+        <button type="submit" class="btn-login">Login</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 2. Main Dashboard Interface -->
+  <div id="dashboardWrapper" class="dashboard-container" style="display: none;">
+    
+    <!-- Top Header bar -->
+    <header class="dashboard-header">
+      <div class="header-branding">
+        <h2>Visuae Phone Status Gateway</h2>
+        <p>Infrastructure Monitor</p>
+      </div>
+      <div class="header-controls">
+        <button id="themeToggle" class="btn-theme-toggle" aria-label="Toggle Theme" title="Toggle Theme"></button>
+        <button id="logoutBtn" class="btn-logout" title="Lock Console">Logout</button>
+      </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="dashboard-content">
+      
+      <!-- Section 1: Gateways & API Checker -->
+      <section class="panel-card" aria-label="System Gateways">
+        <div class="panel-card-header">
+          <h3>Infrastructure Gateways</h3>
+          <button id="refreshBtn" class="btn-action-refresh">Refresh Status</button>
+        </div>
+        
+        <div class="gateways-list">
+          <!-- Twilio Gateway -->
+          <div class="gateway-row" id="gate-twilio">
+            <div class="gateway-info">
+              <h4>Twilio Telecom Gateway</h4>
+              <p>Trunk status check</p>
+            </div>
+            <div class="gateway-status">
+              <span class="status-badge checking">
+                <span class="status-dot"></span>
+                <span class="status-txt">Checking</span>
+              </span>
+              <span class="latency-txt">--</span>
+            </div>
+          </div>
+
+          <!-- Inbound Calling IVR -->
+          <div class="gateway-row" id="gate-ivr">
+            <div class="gateway-info">
+              <h4>Inbound Calling IVR</h4>
+              <p>AWS Lambda Connect Router (eu-north-1)</p>
+            </div>
+            <div class="gateway-status">
+              <span class="status-badge checking">
+                <span class="status-dot"></span>
+                <span class="status-txt">Checking</span>
+              </span>
+              <span class="latency-txt">--</span>
+            </div>
+          </div>
+
+          <!-- Voicemail OneDrive Link -->
+          <div class="gateway-row" id="gate-voicemail">
+            <div class="gateway-info">
+              <h4>Voicemail OneDrive Link</h4>
+              <p>AWS API Gateway Handler (eu-north-1)</p>
+            </div>
+            <div class="gateway-status">
+              <span class="status-badge checking">
+                <span class="status-dot"></span>
+                <span class="status-txt">Checking</span>
+              </span>
+              <span class="latency-txt">--</span>
+            </div>
+          </div>
+
+          <!-- Outbound Calling Gateway -->
+          <div class="gateway-row" id="gate-outbound">
+            <div class="gateway-info">
+              <h4>Outbound Calling</h4>
+              <p>AWS Connect Proxy Gateway (us-east-1)</p>
+            </div>
+            <div class="gateway-status">
+              <span class="status-badge checking">
+                <span class="status-dot"></span>
+                <span class="status-txt">Checking</span>
+              </span>
+              <span class="latency-txt">--</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 2: Outbound Line Tests -->
+      <section class="panel-card" aria-label="Voice Line Tests">
+        <h3>Outbound Voice Line Test</h3>
+        <p class="test-desc">Triggers an outbound voice dial script through the configured Twilio SIP interface, routing directly into Option 1 (Ethan's SIP Line).</p>
+        <button id="testLinesBtn" class="btn-trigger-test">Test All Lines (SIP Option 1)</button>
+      </section>
+
+      <!-- Section 3: Diagnostic Log Console -->
+      <section class="panel-card" aria-label="Diagnostics Log Console">
+        <h3>Diagnostics Console</h3>
+        <div class="console-screen" id="consoleLogs">
+          <div class="console-line sys">[SYSTEM] Log console initiated. System ready.</div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="dashboard-footer">
+      <p>&copy; 2026 Visuae Phone Network Administration Panel.</p>
+    </footer>
+
+  </div>
+
+  <!-- Toast Feedbacks -->
+  <div class="toast-container" id="toastFeed"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
