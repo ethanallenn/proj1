@@ -172,4 +172,7 @@ app.get('*', (req, res) => {
 
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server executing on port ${PORT}`);
+  console.log(`Node version: ${process.version}`);
+  console.log(`TWILIO_ACCOUNT_SID is ${process.env.TWILIO_ACCOUNT_SID ? 'defined' : 'undefined'}`);
+  console.log(`IVR_URL is ${process.env.IVR_URL ? 'defined' : 'undefined'}`);
 });
