@@ -94,6 +94,28 @@ body {
   height: 24px;
 }
 
+/* Shared logo styling used in index.html */
+.portal-logo {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+.login-wrapper .portal-logo {
+  margin: 0 auto 14px;
+}
+
+.portal-header .portal-logo {
+  width: 90px;
+  flex: 0 0 auto;
+}
+
+.dashboard-header .portal-logo {
+  width: 72px;
+  flex: 0 0 auto;
+}
+
 .login-card h2 {
   font-size: 1.25rem;
   font-weight: 700;

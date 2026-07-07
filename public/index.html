@@ -3,20 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Visuae Infrastructure Dashboard</title>
-  <meta name="description" content="Secure administrative status monitor and integration test gateway for the Visuae Phone Network.">
+  <title>Visuae Internal Dashboard</title>
+  <meta name="description" content="Select a service from the list below.">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
   <!-- 1. Password Wall / Login Screen -->
-  <div id="loginOverlay" class="login-wrapper">
-    <div class="login-card">
-      <div class="login-logo">
-        <svg fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/>
-        </svg>
-      </div>
+  <div id="loginOverlay" class="login-wrapper" style="position:fixed; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:24px; box-sizing:border-box; z-index:1000;">
+    <img src="Logo.png" alt="Visuae Logo" class="portal-logo" style="width:96px; max-width:24vw; height:auto; display:block; margin:0 auto 18px; flex:0 0 auto;">
+    <div class="login-card" style="width:100%; max-width:420px; margin:0 auto;">
       <h2>System Login</h2>
       <p>Please enter administrative credentials</p>
       
@@ -39,9 +35,11 @@
   <div id="appGridWrapper" class="portal-container" style="display: none;">
     <!-- Top Header bar -->
     <header class="portal-header">
-      <div class="header-branding">
-        <h2>Visuae Workspace</h2>
-        <p>Enterprise Infrastructure Portal</p>
+      <div class="header-branding" style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+          <img src="Logo.png" alt="Visuae Logo" class="portal-logo" style="width:90px; height:auto; display:block; flex:0 0 auto;">
+          <div style="min-width:0; display:flex; flex-direction:column; justify-content:center;">
+            <h2 style="margin:0;">Internal Dashboard</h2>
+          </div>
       </div>
       <div class="header-controls">
         <button id="portalThemeToggle" class="btn-theme-toggle" aria-label="Toggle Theme" title="Toggle Theme"></button>
@@ -52,8 +50,8 @@
     <!-- App Grid Content -->
     <main class="portal-content">
       <div class="portal-intro">
-        <h3>Welcome, Administrator</h3>
-        <p>Select an application to manage and monitor Visuae systems.</p>
+        <h3>Welcome</h3>
+        <p>Select an application from below.</p>
       </div>
       
       <div class="app-grid">
@@ -88,7 +86,7 @@
     </main>
     
     <footer class="portal-footer">
-      <p>&copy; 2026 Visuae Phone Network Administration Panel.</p>
+      <a href="https://visuae.uk" target="_blank" rel="noopener noreferrer">Visuae 2026</a>
     </footer>
   </div>
 
@@ -97,10 +95,10 @@
     
     <!-- Top Header bar -->
     <header class="dashboard-header">
-      <div class="header-branding">
+      <div class="header-branding" style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
         <button id="backToGridBtn" class="btn-back" title="Back to Portal Dashboard">← Back to Portal</button>
-        <div>
-          <h2>Visuae Phone Status Gateway</h2>
+        <div style="min-width:0;">
+          <h2>Phone Status Gateway</h2>
           <p>Infrastructure Monitor</p>
         </div>
       </div>
@@ -202,7 +200,7 @@
 
     <!-- Footer -->
     <footer class="dashboard-footer">
-      <p>&copy; 2026 Visuae Phone Network Administration Panel.</p>
+      <p><a href="https://visuae.uk" target="_blank" rel="noopener noreferrer">Visuae 2026</a></p>
     </footer>
 
   </div>

@@ -1,6 +1,7 @@
 // public/app.js
 
 let authHeader = "";
+let statusIntervalId = null;
 
 document.addEventListener("DOMContentLoaded", () => {
   initTheme();
@@ -9,15 +10,36 @@ document.addEventListener("DOMContentLoaded", () => {
   const storedAuth = sessionStorage.getItem("visuae_auth");
   if (storedAuth) {
     authHeader = storedAuth;
-    showDashboard();
+    showAppGrid();
   }
 
   // Event Listeners
-  document.getElementById("loginForm").addEventListener("submit", handleLogin);
-  document.getElementById("logoutBtn").addEventListener("click", handleLogout);
-  document.getElementById("refreshBtn").addEventListener("click", fetchStatus);
-  document.getElementById("testLinesBtn").addEventListener("click", triggerSipLineTest);
-  document.getElementById("themeToggle").addEventListener("click", toggleTheme);
+  const loginForm = document.getElementById("loginForm");
+  if (loginForm) loginForm.addEventListener("submit", handleLogin);
+
+  const logoutBtn = document.getElementById("logoutBtn");
+  if (logoutBtn) logoutBtn.addEventListener("click", handleLogout);
+
+  const portalLogoutBtn = document.getElementById("portalLogoutBtn");
+  if (portalLogoutBtn) portalLogoutBtn.addEventListener("click", handleLogout);
+
+  const refreshBtn = document.getElementById("refreshBtn");
+  if (refreshBtn) refreshBtn.addEventListener("click", fetchStatus);
+
+  const testLinesBtn = document.getElementById("testLinesBtn");
+  if (testLinesBtn) testLinesBtn.addEventListener("click", triggerSipLineTest);
+
+  const themeToggle = document.getElementById("themeToggle");
+  if (themeToggle) themeToggle.addEventListener("click", toggleTheme);
+
+  const portalThemeToggle = document.getElementById("portalThemeToggle");
+  if (portalThemeToggle) portalThemeToggle.addEventListener("click", toggleTheme);
+
+  const backToGridBtn = document.getElementById("backToGridBtn");
+  if (backToGridBtn) backToGridBtn.addEventListener("click", closePhonelineStatus);
+
+  const appPhonelineStatus = document.getElementById("appPhonelineStatus");
+  if (appPhonelineStatus) appPhonelineStatus.addEventListener("click", openPhonelineStatus);
 });
 
 // 1. Theme Management
@@ -36,12 +58,12 @@ function toggleTheme() {
 }
 
 function updateThemeButton(theme) {
-  const btn = document.getElementById("themeToggle");
-  if (theme === "dark") {
-    btn.innerHTML = `<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58c-.39-.39-1.03-.39-1.41 0s-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41L5.99 4.58zm12.37 12.37c-.39-.39-1.03-.39-1.41 0s-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41l-1.06-1.06zm1.06-12.37c-.39-.39-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06c.39-.38.39-1.02 0-1.41zm-12.37 12.37c-.39-.39-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06c.39-.38.39-1.02 0-1.41z"/></svg>`;
-  } else {
-    btn.innerHTML = `<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12.3 22h-.1c-5.5 0-10-4.5-10-10C2.2 6.8 6.4 2.5 11.7 2.1c.6-.1 1.2.4 1.2 1 0 .4-.2.8-.6 1-2.4 1.4-3.8 4-3.8 6.9 0 4.4 3.6 8 8 8 2.9 0 5.5-1.5 6.9-3.8.3-.4.7-.6 1.1-.6.6 0 1.1.5 1 1.1-.4 5.3-4.8 9.5-10.1 9.5z"/></svg>`;
-  }
+  const btns = [document.getElementById("themeToggle"), document.getElementById("portalThemeToggle")];
+  const darkIcon = `<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58c-.39-.39-1.03-.39-1.41 0s-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41L5.99 4.58zm12.37 12.37c-.39-.39-1.03-.39-1.41 0s-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41l-1.06-1.06zm1.06-12.37c-.39-.39-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06c.39-.38.39-1.02 0-1.41zm-12.37 12.37c-.39-.39-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06c.39-.38.39-1.02 0-1.41z"/></svg>`;
+  const lightIcon = `<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12.3 22h-.1c-5.5 0-10-4.5-10-10C2.2 6.8 6.4 2.5 11.7 2.1c.6-.1 1.2.4 1.2 1 0 .4-.2.8-.6 1-2.4 1.4-3.8 4-3.8 6.9 0 4.4 3.6 8 8 8 2.9 0 5.5-1.5 6.9-3.8.3-.4.7-.6 1.1-.6.6 0 1.1.5 1 1.1-.4 5.3-4.8 9.5-10.1 9.5z"/></svg>`;
+  btns.forEach(btn => {
+    if (btn) btn.innerHTML = theme === "dark" ? darkIcon : lightIcon;
+  });
 }
 
 // 2. Authentication Login Handling
@@ -69,7 +91,7 @@ async function handleLogin(e) {
       document.getElementById("usernameInput").value = "";
       document.getElementById("passwordInput").value = "";
       
-      showDashboard();
+      showAppGrid();
     } else {
       const data = await response.json();
       errorEl.textContent = data.error || "Authentication failed.";
@@ -79,21 +101,54 @@ async function handleLogin(e) {
   }
 }
 
-function showDashboard() {
+function showAppGrid() {
   document.getElementById("loginOverlay").style.display = "none";
-  document.getElementById("dashboardWrapper").style.display = "block";
+  document.getElementById("appGridWrapper").style.display = "block";
+  document.getElementById("dashboardWrapper").style.display = "none";
   
-  printConsoleLog("Session unlocked. Connected to console API.", "sys");
+  printConsoleLog("Session unlocked. Welcome to Visuae Workspace Portal.", "sys");
+}
+
+function openPhonelineStatus() {
+  document.getElementById("appGridWrapper").style.display = "none";
+  document.getElementById("dashboardWrapper").style.display = "block";
+  printConsoleLog("Opening Phoneline Status Gateway...", "sys");
   
   // Perform initial status fetch
   fetchStatus();
+  
+  // Start automatic checks every 15 seconds
+  if (!statusIntervalId) {
+    statusIntervalId = setInterval(fetchStatus, 15000);
+    printConsoleLog("Automatic background checks enabled (every 15s).", "sys");
+  }
+}
+
+function closePhonelineStatus() {
+  document.getElementById("dashboardWrapper").style.display = "none";
+  document.getElementById("appGridWrapper").style.display = "block";
+  printConsoleLog("Returned to Portal Dashboard.", "sys");
+  
+  // Stop automatic checks
+  if (statusIntervalId) {
+    clearInterval(statusIntervalId);
+    statusIntervalId = null;
+    printConsoleLog("Automatic background checks suspended.", "sys");
+  }
 }
 
 function handleLogout() {
   authHeader = "";
   sessionStorage.removeItem("visuae_auth");
   
+  // Stop automatic checks
+  if (statusIntervalId) {
+    clearInterval(statusIntervalId);
+    statusIntervalId = null;
+  }
+  
   document.getElementById("dashboardWrapper").style.display = "none";
+  document.getElementById("appGridWrapper").style.display = "none";
   document.getElementById("loginOverlay").style.display = "flex";
   
   resetStatusUi();
